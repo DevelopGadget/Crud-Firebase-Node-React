@@ -11,10 +11,10 @@ const app = Express();
 app.set('port', process.env.PORT || 3000);
 
 //Hago los uses de la app
-app.use(errors());
 app.use(Cors());
+app.use(errors());
 app.use(Express.json());
-app.use(Express.urlencoded({ extended: false }));
+app.use(Express.urlencoded({ extended: true }));
 
 //Hago las rutas
 Rutas(app);

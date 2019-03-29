@@ -42,6 +42,7 @@ export const Post = (req, res) => {
     if (Image(req.body.UrlEscudo) && Image(req.body.UrlEstadio)) {
         //Llamo la funcion para agregar
         Database.collection('Equipos').add(req.body).then(value => {
+            //Retorno un Ok
             res.status(200).send('Ok');
         }).catch(err => {
             //envio si ocurre un error
@@ -49,6 +50,24 @@ export const Post = (req, res) => {
         });
     } else {
         //envio si ocurre un error
-        res.status(405).send('No es una imagen');
+        res.status(406).send('No es una imagen');
+    }
+}
+
+//Funcion para modificar un documento
+export const Put = (req, res) => {
+    //Valido si es una url de imagen
+    if (Image(req.body.UrlEscudo) && Image(req.body.UrlEstadio)) {
+        //Llamo la funcion para modificar
+        Database.collection('Equipos').doc(req.headers.id).set(req.body).then(snap => {
+            //Retorno un Ok
+            res.status(200).send('Ok');
+        }).catch(err => {
+            //envio si ocurre un error
+            res.status(400).send(err);
+        });
+    } else {
+        //envio si ocurre un error
+        res.status(406).send('No es una imagen');
     }
 }
