@@ -17,11 +17,12 @@ function InitApp() {
 InitApp();
 //Inicio la base de datos
 var Database = Firebase.firestore();
+var Collection = Database.collection('Equipos');
 
 //Funcion para obtener datos
 export const Get = (req, res) => {
     //Obtengo los documentos
-    Database.collection('Equipos').get().then(snaps => {
+    Collection.get().then(snaps => {
         var Lista = [];
         //Recorro los documentos
         snaps.forEach(docs => {
@@ -41,7 +42,7 @@ export const Post = (req, res) => {
     //Valido si es una url de imagen
     if (Image(req.body.UrlEscudo) && Image(req.body.UrlEstadio)) {
         //Llamo la funcion para agregar
-        Database.collection('Equipos').add(req.body).then(value => {
+        Collection.add(req.body).then(value => {
             //Retorno un Ok
             res.status(200).send('Ok');
         }).catch(err => {
@@ -59,7 +60,7 @@ export const Put = (req, res) => {
     //Valido si es una url de imagen
     if (Image(req.body.UrlEscudo) && Image(req.body.UrlEstadio)) {
         //Llamo la funcion para modificar
-        Database.collection('Equipos').doc(req.headers.id).set(req.body).then(snap => {
+        Collection.doc(req.headers.id).set(req.body).then(snap => {
             //Retorno un Ok
             res.status(200).send('Ok');
         }).catch(err => {
@@ -70,4 +71,16 @@ export const Put = (req, res) => {
         //envio si ocurre un error
         res.status(406).send('No es una imagen');
     }
+}
+
+//Funcion para eliminar un documento
+export const Delete = (req, res) => {
+    //Llamo la funcion para eliminar
+    Collection.doc(req.headers.id).delete().then(value => {
+        //Retorno si se elimino
+        res.status(200).send('Ok');
+    }).catch(err => {
+        //envio si ocurre un error
+        res.status(400).send(err);
+    });
 }
