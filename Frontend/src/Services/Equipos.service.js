@@ -23,3 +23,13 @@ export const Delete = (id) => {
     mode: 'cors'
   });
 };
+
+//Metodo para agregar equipo
+export const Post = (Team) => {
+  return fetch('https://crud-firebase.herokuapp.com/Post', {
+    method: 'POST',
+    headers: new Headers().append('Content-Type', 'application/json'),
+    mode: 'cors',
+    body: JSON.stringify(Team)
+  });
+};

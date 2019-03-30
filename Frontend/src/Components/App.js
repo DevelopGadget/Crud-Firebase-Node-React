@@ -1,16 +1,29 @@
 import React, { Component } from "react";
 import { Get, Delete } from "../Services/Equipos.service";
 import Swal from 'sweetalert2';
+import Content from 'sweetalert2-react-content';
+import Form from './Form';
 
 //Componente principal
 class App extends Component {
+
+  SwalReact = Content(Swal);
+
   constructor(props) {
     super(props);
     this.state = { Load: false, Teams: [] };
   }
 
-  Hola() {
-    console.log("Hola Mundo");
+  //Agregar equipos modal
+  AddTeam() {
+    this.SwalReact.fire(
+      {
+        title: 'Agregar Equipo',
+        html: <Form Nombre='' Estadio='' UrlEscudo='' UrlEstadio='' Agregar={true} Sweet={Swal}></Form>,
+        showConfirmButton: false,
+        showCloseButton: true
+      }
+    );
   }
 
   //Eliminar un equipo
@@ -60,7 +73,7 @@ class App extends Component {
             <ul className="right">
               <li>
                 <a onClick={this.Hola}>
-                  <i className="material-icons">add</i>
+                  <i className="material-icons" onClick={this.AddTeam.bind(this)}>add</i>
                 </a>
               </li>
               <li>
