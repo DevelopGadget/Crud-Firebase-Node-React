@@ -14,17 +14,12 @@ export const Get = () => {
 
 //Metodo para eliminar un documento
 export const Delete = (id) => {
-    var hdr = new Headers();
-    hdr.append('Content-Type', 'application/json');
-    hdr.append('Id', id);
-    return new Promise((resolve, reject) => {
-      fetch('https://crud-firebase.herokuapp.com/Delete', {
-        method: 'DELETE',
-        headers: hdr,
-        mode: 'cors'
-      })
-        .then(res => res.json())
-        .then(Docs => resolve(Docs))
-        .catch(err => reject(err));
-    });
-  };
+  var hdr = new Headers();
+  hdr.append('Content-Type', 'application/json');
+  hdr.append('Id', id);
+  return fetch('https://crud-firebase.herokuapp.com/Delete', {
+    method: 'DELETE',
+    headers: hdr,
+    mode: 'cors'
+  });
+};

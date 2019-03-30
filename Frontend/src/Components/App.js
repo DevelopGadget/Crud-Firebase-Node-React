@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Get } from "../Services/Equipos.service";
+import { Get, Delete } from "../Services/Equipos.service";
+import Swal from 'sweetalert2';
 
 //Componente principal
 class App extends Component {
@@ -10,6 +11,29 @@ class App extends Component {
 
   Hola() {
     console.log("Hola Mundo");
+  }
+
+  //Eliminar un equipo
+  async DeleteTeam(id) {
+    await Swal.fire(
+      {
+        title: '¿Estas seguro de eliminar este equipo?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cerrar'
+      }
+    ).then(async value => {
+      if (value.value) {
+        await Delete(id).then(value => {
+          Swal.fire('Eliminado', 'Actualiza para ver cambios', 'success');
+        }).catch(err => {
+          Swal.fire('Error', err, 'error');
+        });
+      }
+    });
   }
 
   //Metodo donde se obtiene todo
@@ -66,7 +90,7 @@ class App extends Component {
                       <a className="waves-effect waves-light btn-small blue-text text-accent-4">
                         Editar
                       </a>
-                      <a className="waves-effect waves-light btn-small red-text text-accent-4">
+                      <a className="waves-effect waves-light btn-small red-text text-accent-4" onClick={this.DeleteTeam.bind(this, item.Id)}>
                         Eliminar
                       </a>
                     </div>
