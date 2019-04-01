@@ -3,6 +3,7 @@ import { Get, Delete } from "../Services/Equipos.service";
 import Swal from 'sweetalert2';
 import Content from 'sweetalert2-react-content';
 import Form from './Form';
+import Card from './Cards';
 
 //Componente principal
 class App extends Component {
@@ -52,7 +53,7 @@ class App extends Component {
   //Metodo donde se obtiene todo
   async GetAll() {
     await Get().then(Docs => {
-      this.setState({ Teams: Docs });
+      Docs.Status == 200 ? this.setState({ Teams: Docs.Message }) : Swal('Error', 'Ha ocurrido un error vuelva a recargar', 'error');
     });
   }
 
@@ -88,42 +89,7 @@ class App extends Component {
           <div className="row center-align">
             {this.state.Teams.map((item, i) => {
               return (
-                <div className="col center-align" key={i}>
-                  <div className="card">
-                    <div className="card-image waves-effect waves-block waves-light">
-                      <img className="activator" src={item.UrlEstadio} />
-                    </div>
-                    <div className="card-content">
-                      <span className="card-title activator grey-text text-darken-4">
-                        {item.Nombre}
-                        <i className="material-icons right">more_vert</i>
-                      </span>
-                    </div>
-                    <div className="card-action">
-                      <a className="waves-effect waves-light btn-small blue-text text-accent-4">
-                        Editar
-                      </a>
-                      <a className="waves-effect waves-light btn-small red-text text-accent-4" onClick={this.DeleteTeam.bind(this, item.Id)}>
-                        Eliminar
-                      </a>
-                    </div>
-                    <div className="card-reveal center-align">
-                      <span className="card-title grey-text text-darken-4">
-                        <i className="material-icons right">close</i>
-                      </span>
-                      <div className="card-image waves-effect waves-block waves-light">
-                        <img src={item.UrlEscudo} />
-                      </div>
-                      <span className="grey-text text-darken-4">
-                        Nombre: {item.Nombre}
-                        <br />
-                        Id: {item.Id}
-                        <br />
-                        Estadio: {item.Estadio}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <Card Nombre={item.Nombre} Estadio={item.Estadio} UrlEscudo={item.UrlEscudo} UrlEstadio={item.UrlEstadio} Id={item.Id} key={i} />
               );
             })}
           </div>
