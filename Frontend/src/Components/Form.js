@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Post } from '../Services/Equipos.service';
+import { Post, Put } from '../Services/Equipos.service';
 
 export default class Form extends Component {
 
@@ -12,12 +12,16 @@ export default class Form extends Component {
         if (this.state.Nombre != '' && this.state.Estadio != '' && this.state.UrlEstadio != '' && this.state.UrlEscudo != '') {
             if (this.props.Agregar) {
                 await Post(this.state).then(value => {
-                    value.Status == 200 ? this.props.Sweet.fire('Eliminado', 'Actualiza para ver cambios', 'success') : this.props.Sweet('Error', 'Ha ocurrido un error vuelva a recargar', 'error');
+                    value.Status == 200 ? this.props.Sweet.fire('Agregado', 'Actualiza para ver cambios', 'success') : this.props.Sweet('Error', 'Ha ocurrido un error vuelva a recargar', 'error');
                 }).catch(err => {
                     this.props.Sweet.fire('Error', err + '', 'error');
                 });
             } else {
-
+                await Put(Object.assign(this.state, { 'Id': this.props.Id })).then(value => {
+                    value.Status == 200 ? this.props.Sweet.fire('Editado', 'Actualiza para ver cambios', 'success') : this.props.Sweet('Error', 'Ha ocurrido un error vuelva a recargar', 'error');
+                }).catch(err => {
+                    this.props.Sweet.fire('Error', err + '', 'error');
+                });
             }
         } else {
             this.props.Sweet.fire('Error', 'Complete los campos', 'error');

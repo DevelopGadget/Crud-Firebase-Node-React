@@ -40,3 +40,18 @@ export const Post = (Team) => {
       .catch(err => reject(err));
   });
 };
+
+//Metodo para actualizar equipo
+export const Put = (Team) => {
+  return new Promise((resolve, reject) => {
+    fetch('https://crud-firebase.herokuapp.com/Put', {
+      method: 'Put',
+      headers: { 'Content-Type': 'application/json', 'Id': Team.Id },
+      mode: 'cors',
+      body: JSON.stringify({ 'Nombre': Team.Nombre, 'Estadio': Team.Estadio, 'UrlEscudo': Team.UrlEscudo, 'UrlEstadio': Team.UrlEstadio })
+    })
+      .then(res => res.json())
+      .then(Docs => resolve(Docs))
+      .catch(err => reject(err));
+  });
+};

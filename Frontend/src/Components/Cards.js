@@ -1,11 +1,27 @@
 import React, { Component } from "react";
 import { Delete } from "../Services/Equipos.service";
 import Swal from 'sweetalert2';
+import Content from 'sweetalert2-react-content';
+import Form from './Form';
 
 export default class Cards extends Component {
 
     constructor(props) {
         super(props);
+    }
+
+    SwalReact = Content(Swal);
+
+    //Actualizar Equipo
+    async PutTeam() {
+        this.SwalReact.fire(
+            {
+                title: 'Actualizar Equipo',
+                html: <Form Nombre={this.props.Nombre} Estadio={this.props.Estadio} UrlEscudo={this.props.UrlEscudo} UrlEstadio={this.props.UrlEstadio} Agregar={false} Sweet={Swal} Id={this.props.Id}></Form>,
+                showConfirmButton: false,
+                showCloseButton: true
+            }
+        );
     }
 
     //Eliminar un equipo
@@ -45,8 +61,8 @@ export default class Cards extends Component {
                         </span>
                     </div>
                     <div className="card-action">
-                        <a className="waves-effect waves-light btn-small blue-text text-accent-4">Editar</a>
-                        <a className="waves-effect waves-light btn-small red-text text-accent-4" onClick={this.DeleteTeam.bind(this, this.props.Id)}>Eliminar</a>
+                        <a className="waves-effect waves-light btn-small blue-text text-accent-4"onClick={this.PutTeam.bind(this)}>Editar</a>
+                        <a className="waves-effect waves-light btn-small red-text text-accent-4" onClick={this.DeleteTeam.bind(this)}>Eliminar</a>
                     </div>
                     <div className="card-reveal center-align">
                         <span className="card-title grey-text text-darken-4">
