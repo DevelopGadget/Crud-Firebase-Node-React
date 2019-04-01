@@ -30,10 +30,10 @@ export const Get = (req, res) => {
             Lista.push(Object.assign({ 'Id': docs.id }, docs.data()));
         });
         //Envio la respuesta
-        res.status(200).send(Lista);
+        res.status(200).send({ Message: Lista, Status: 200 });
     }).catch(err => {
         //envio si ocurre un error
-        res.status(400).send(err);
+        res.status(400).send({ Message: err, Status: 400 });
     });
 }
 
@@ -44,14 +44,14 @@ export const Post = (req, res) => {
         //Llamo la funcion para agregar
         Collection.add(req.body).then(value => {
             //Retorno un Ok
-            res.status(200).send('Ok');
+            res.status(200).send({ Message: 'Ok', Status: 200 });
         }).catch(err => {
             //envio si ocurre un error
-            res.status(400).send(err);
+            res.status(400).send({ Message: err, Status: 400 });
         });
     } else {
         //envio si ocurre un error
-        res.status(406).send('No es una imagen');
+        res.status(406).send({ Message: 'No es una imagen', Status: 406 });
     }
 }
 
@@ -62,14 +62,14 @@ export const Put = (req, res) => {
         //Llamo la funcion para modificar
         Collection.doc(req.headers.id).set(req.body).then(snap => {
             //Retorno un Ok
-            res.status(200).send('Ok');
+            res.status(200).send({ Message: 'Ok', Status: 200 });
         }).catch(err => {
             //envio si ocurre un error
-            res.status(400).send(err);
+            res.status(400).send({ Message: err, Status: 400 });
         });
     } else {
         //envio si ocurre un error
-        res.status(406).send('No es una imagen');
+        res.status(406).send({ Message: 'No es una imagen', Status: 406 });
     }
 }
 
@@ -78,9 +78,9 @@ export const Delete = (req, res) => {
     //Llamo la funcion para eliminar
     Collection.doc(req.headers.id).delete().then(value => {
         //Retorno si se elimino
-        res.status(200).send('Ok');
+        res.status(200).send({ Message: 'Ok', Status: 200 });
     }).catch(err => {
         //envio si ocurre un error
-        res.status(400).send(err);
+        res.status(400).send({ Message: err, Status: 400 });
     });
 }
