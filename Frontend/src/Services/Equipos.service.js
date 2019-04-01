@@ -3,7 +3,7 @@ export const Get = () => {
   return new Promise((resolve, reject) => {
     fetch('https://crud-firebase.herokuapp.com/Get', {
       method: 'GET',
-      headers: new Headers().append('Content-Type', 'application/json'),
+      headers: { 'Content-Type': 'application/json' },
       mode: 'cors'
     })
       .then(res => res.json())
@@ -15,12 +15,9 @@ export const Get = () => {
 //Metodo para eliminar un documento
 export const Delete = (id) => {
   return new Promise((resolve, reject) => {
-    var hdr = new Headers();
-    hdr.append('Content-Type', 'application/json');
-    hdr.append('Id', id);
     fetch('https://crud-firebase.herokuapp.com/Delete', {
       method: 'DELETE',
-      headers: hdr,
+      headers: { 'Content-Type': 'application/json', 'Id': id },
       mode: 'cors'
     })
       .then(res => res.json())
@@ -34,9 +31,9 @@ export const Post = (Team) => {
   return new Promise((resolve, reject) => {
     fetch('https://crud-firebase.herokuapp.com/Post', {
       method: 'POST',
-      headers: new Headers().append('Content-Type', 'application/json'),
+      headers: { 'Content-Type': 'application/json' },
       mode: 'cors',
-      body: JSON.stringify(Team)
+      body: JSON.stringify({ 'Nombre': Team.Nombre, 'Estadio': Team.Estadio, 'UrlEscudo': Team.UrlEscudo, 'UrlEstadio': Team.UrlEstadio })
     })
       .then(res => res.json())
       .then(Docs => resolve(Docs))

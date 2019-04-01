@@ -11,10 +11,8 @@ export default class Form extends Component {
     async SubmitButton() {
         if (this.state.Nombre != '' && this.state.Estadio != '' && this.state.UrlEstadio != '' && this.state.UrlEscudo != '') {
             if (this.props.Agregar) {
-                await Post({ Nombre: this.state.Nombre.toUpperCase(), Estadio: this.state.Estadio.toUpperCase(), UrlEstadio: this.state.UrlEstadio, UrlEscudo: this.state.UrlEscudo }).then(value => {
-                    value.json()
-                        .then(res => this.props.Sweet.fire('Agregado', 'Actualiza para ver cambios', 'success'))
-                        .catch(err => this.props.Sweet.fire('Error', err, 'error'));
+                await Post(this.state).then(value => {
+                    value.Status == 200 ? this.props.Sweet.fire('Eliminado', 'Actualiza para ver cambios', 'success') : this.props.Sweet('Error', 'Ha ocurrido un error vuelva a recargar', 'error');
                 }).catch(err => {
                     this.props.Sweet.fire('Error', err + '', 'error');
                 });

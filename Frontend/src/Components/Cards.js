@@ -23,9 +23,9 @@ export default class Cards extends Component {
         ).then(async value => {
             if (value.value) {
                 await Delete(this.props.Id).then(value => {
-                    Swal.fire('Eliminado', 'Actualiza para ver cambios', 'success');
+                    value.Status == 200 ? Swal.fire('Eliminado', 'Actualiza para ver cambios', 'success') : Swal('Error', 'Ha ocurrido un error vuelva a recargar', 'error')
                 }).catch(err => {
-                    Swal.fire('Error', err, 'error');
+                    Swal.fire('Error', err.Message, 'error');
                 });
             }
         });
