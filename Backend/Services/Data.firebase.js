@@ -42,9 +42,9 @@ export const InsertData = (req) => {
     //Valido si es una url de imagen
     if (Image(req.body.UrlEscudo) && Image(req.body.UrlEstadio)) {
         //Llamo la funcion para agregar
-        return Collection.add(req.body).then(value => {
+        return Collection.add(req.body).then(async value  => {
             //Retorno un Ok
-            return ({ Message: 'Ok', Status: 200 });
+            return ({ Message: (await FindAll()).Message, Status: 200 });
         }).catch(err => {
             //envio si ocurre un error
             return ({ Message: err, Status: 400 });
@@ -60,9 +60,9 @@ export const SetData = (req) => {
     //Valido si es una url de imagen
     if (Image(req.body.UrlEscudo) && Image(req.body.UrlEstadio)) {
         //Llamo la funcion para modificar
-        return Collection.doc(req.headers.id).set(req.body).then(snap => {
+        return Collection.doc(req.headers.id).set(req.body).then(async snap => {
             //Retorno un Ok
-            return({ Message: 'Ok', Status: 200 });
+            return({ Message: (await FindAll()).Message, Status: 200 });
         }).catch(err => {
             //envio si ocurre un error
             return({ Message: err, Status: 400 });
@@ -76,9 +76,9 @@ export const SetData = (req) => {
 //Funcion para eliminar un documento
 export const DeleteData = (req) => {
     //Llamo la funcion para eliminar
-    return Collection.doc(req.headers.id).delete().then(value => {
+    return Collection.doc(req.headers.id).delete().then(async value => {
         //Retorno si se elimino
-        return({ Message: 'Ok', Status: 200 });
+        return({ Message: (await FindAll()).Message, Status: 200 });
     }).catch(err => {
         //envio si ocurre un error
         return({ Message: err, Status: 400 });
