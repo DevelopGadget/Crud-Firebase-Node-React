@@ -7,7 +7,7 @@
     "start": "node Index.js",
     "dev": "nodemon Index.js --exec babel-node js",
     "build": "babel ./ -d build --ignore node_modules",
-    "test": "mocha --no-deprecation --compilers js:babel-core/register ./Tests/**/*.test.js"
+    "test": "mocha --no-deprecation --require babel-register --require babel-register ./Test/**/*.test.js"
   },
   "keywords": [],
   "author": "",
