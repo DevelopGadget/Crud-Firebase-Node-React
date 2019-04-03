@@ -1,21 +1,59 @@
 import React, { Component } from "react";
-import { Get } from "../Services/Equipos.service";
+import { Get, Delete } from "../Services/Equipos.service";
+import Swal from 'sweetalert2';
+import Content from 'sweetalert2-react-content';
+import Form from './Form';
+import Card from './Cards';
 
 //Componente principal
 class App extends Component {
+
+  SwalReact = Content(Swal);
+
   constructor(props) {
     super(props);
     this.state = { Load: false, Teams: [] };
   }
 
-  Hola() {
-    console.log("Hola Mundo");
+  //Agregar equipos modal
+  AddTeam() {
+    this.SwalReact.fire(
+      {
+        title: 'Agregar Equipo',
+        html: <Form Nombre='' Estadio='' UrlEscudo='' UrlEstadio='' Agregar={true} Sweet={Swal}></Form>,
+        showConfirmButton: false,
+        showCloseButton: true
+      }
+    );
+  }
+
+  //Eliminar un equipo
+  async DeleteTeam(id) {
+    await Swal.fire(
+      {
+        title: '¿Estas seguro de eliminar este equipo?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cerrar'
+      }
+    ).then(async value => {
+      if (value.value) {
+        await Delete(id).then(value => {
+          Swal.fire('Eliminado', 'Actualiza para ver cambios', 'success');
+        }).catch(err => {
+          Swal.fire('Error', err, 'error');
+        });
+      }
+    });
   }
 
   //Metodo donde se obtiene todo
   async GetAll() {
     await Get().then(Docs => {
-      this.setState({ Teams: Docs });
+      Docs.Status == 200 ? this.setState({ Teams: Docs.Message }) : Swal('Error', 'Ha ocurrido un error vuelva a recargar', 'error');
     });
   }
 
@@ -36,7 +74,7 @@ class App extends Component {
             <ul className="right">
               <li>
                 <a onClick={this.Hola}>
-                  <i className="material-icons">add</i>
+                  <i className="material-icons" onClick={this.AddTeam.bind(this)}>add</i>
                 </a>
               </li>
               <li>
@@ -51,42 +89,7 @@ class App extends Component {
           <div className="row center-align">
             {this.state.Teams.map((item, i) => {
               return (
-                <div className="col center-align" key={i}>
-                  <div className="card">
-                    <div className="card-image waves-effect waves-block waves-light">
-                      <img className="activator" src={item.UrlEstadio} />
-                    </div>
-                    <div className="card-content">
-                      <span className="card-title activator grey-text text-darken-4">
-                        {item.Nombre}
-                        <i className="material-icons right">more_vert</i>
-                      </span>
-                    </div>
-                    <div className="card-action">
-                      <a className="waves-effect waves-light btn-small blue-text text-accent-4">
-                        Editar
-                      </a>
-                      <a className="waves-effect waves-light btn-small red-text text-accent-4">
-                        Eliminar
-                      </a>
-                    </div>
-                    <div className="card-reveal center-align">
-                      <span className="card-title grey-text text-darken-4">
-                        <i className="material-icons right">close</i>
-                      </span>
-                      <div className="card-image waves-effect waves-block waves-light">
-                        <img src={item.UrlEscudo} />
-                      </div>
-                      <span className="grey-text text-darken-4">
-                        Nombre: {item.Nombre}
-                        <br />
-                        Id: {item.Id}
-                        <br />
-                        Estadio: {item.Estadio}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <Card Nombre={item.Nombre} Estadio={item.Estadio} UrlEscudo={item.UrlEscudo} UrlEstadio={item.UrlEstadio} Id={item.Id} key={i} />
               );
             })}
           </div>
